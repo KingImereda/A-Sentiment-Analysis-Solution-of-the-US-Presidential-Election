@@ -1,4 +1,4 @@
-# Sentiment-Analysis of US Election
+# Voter Sentiment and News-Opinion Analytics for US Presidential Race using Microsoft Fabric"
 
 Project Overview: A Sentiment Analysis Report on US Presidential Election, 2024.
 
