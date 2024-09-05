@@ -36,8 +36,8 @@ A Sentiment Analysis Report on US Presidential Election, 2024. This project is e
 7. Orchestrate the whole process as an End-to-End Pipeline using Fabric Data Factory.
 
 ## Tools Used.
-- Google Custom Search Engine JASON API
-- Microsoft Fabric- Data Engineering Component.
+- Google Custom Search Engine JSON API
+- Microsoft Fabric- Synapse Data Engineering Component.
   - Data Factory-For Data Injestion.
 - Microsoft Fabric One Lake.
   - Lakehouse Database- For data storage.
@@ -95,10 +95,10 @@ Back on The Programmable Search Engine
 ### Fabric Workspace.
 Create and configure Power BI Workspace for this project
 ##### Prerequisite: Enable Microsoft Fabric in Power BI Account as an Admin or Tenant.
-- Go to <app.powerbi.com>
-- Navigate to <workspaces> tab on the left
- - At the bottom, click< + New Workspace >
- - A drop down at the top right; Enter name of workspace < Global News Data Analytics >
+- Go to www.app.powerbi.com
+- Navigate to "workspaces" tab on the left
+ - At the bottom, click " + New Workspace "
+ - A drop down at the top right; Enter name of workspace ( Global News Data Analytics )
  - Optional: In the description box, give detail description of project.
  - Scroll downward to "Advance" assign licensing to the workspace by clicking on "Trial" if you using trial version or " Premium Capacity" if you are using premium license.
  - Click Apply button
@@ -123,7 +123,7 @@ Switch from Power BI environment to Data Engineering environment
 - Then Click on "Source" tab. To configure Source Connection.
   - In "Connection" field, Click on the drop-down and select "more"(because our data source is outside of Fabric Environment)
   - New Sources--> click on "View more"-->Scroll down and select "REST" from variety of options. REST is the resource use for connecting to APIs
-  - On "Connection Setting" heading-->Base URL, input Endpoint and Query Parameter(s) < https://www.googleapis.com/customsearch/v1?q=YOUR_QUERY&cx=YOUR_ENGINE_ID&key=YOUR_API_KEY&q=SEARCH_QUERY >
+  - On "Connection Setting" heading-->Base URL, input Endpoint and Query Parameter(s) " https://www.googleapis.com/customsearch/v1?q=YOUR_QUERY&cx=YOUR_ENGINE_ID&key=YOUR_API_KEY&q=SEARCH_QUERY "
   - On "Connection Credentials" sub-heading-->, input connection name for ease of reference purpose, say "News_Opinions"
   - Then, click "Connect"
   - Test Data Factory connection to  API Data Source, by clicking on the " Test Connection" tab. Connection was successful, this prove that  Data Factory has establish connection to my Google CSE JSON API 
