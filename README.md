@@ -113,6 +113,7 @@ Switch from Power BI environment to Data Engineering environment
 - Click "create".
 
 ## DATA INGESTION.
+This is done using the Data Factory Component of Fabric.
 - On the bottom left, click on the Power BI icon.
 - From the list of icons, click the "Data Factory" icon to move into Data Factory environment
 - Click on the "Data Pipeline" tab, to create a new pipeline for the Data Factory.
