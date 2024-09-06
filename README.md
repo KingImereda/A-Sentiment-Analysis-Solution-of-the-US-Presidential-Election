@@ -312,11 +312,44 @@ spark.sql("CREATE DATABASE IF NOT EXISTS Google_Custom_SearchDB")
 ```
 
 ```
-# Save as delta table into Lakehouse Database
+#The code effectively handles the scenario where the target table already exists by performing a MERGE operation to update existing rows and insert new ones based on specified conditions. This ensures that the #data in the Delta table remains up-to-date and consistent with the df_cleaned_final DataFrame. i.eSave the table in delta format and perform an incremental loading SCD_1
 
-df_cleaned_final.write.format("delta").mode("overwrite").saveAsTable("Google_Custom_SearchDB.tbl_latest_news")
+from pyspark.sql.utils import AnalysisException
+
+try:
+    
+    table_name = "Google_Custom_SearchDB.tbl_latest_news"
+    
+    df_cleaned_final.write.format("delta").saveAsTable(table_name)
+
+except AnalysisException:
+
+    print("Table Already Exists")
+
+    df_cleaned_final.createOrReplaceTempView("vw_df_cleaned_final")
+
+    spark.sql(f""" MERGE INTO {table_name} target_table
+                   USING vw_df_cleaned_final source_view
+
+                   ON source_view.provider = target_table.provider
+
+                   WHEN MATCHED AND
+                   source_view.url <> target_table.url OR
+                   source_view.kind <> target_table.kind OR
+                   source_view.pagemap <> target_table.pagemap OR
+                   source_view.title <> target_table.title OR
+                   source_view.snippet <> target_table.snippet OR
+                   source_view.date_fetched <> target_table.date_fetched 
+
+                   THEN UPDATE SET *
+
+                   WHEN NOT MATCHED THEN INSERT *
+              """)
+
+
+
+
 ```
-
 D.SENTIMENT ANALYSIS(Incremental Loading)
 
 
