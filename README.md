@@ -302,6 +302,15 @@ df_cleaned_final = df_cleaned.withColumnRenamed("displayLink", "provider").withC
 
 ![Screenshot 2024-09-06 111240](https://github.com/user-attachments/assets/ec34edb5-6a25-4140-bd2f-3c29a8a9f347)
 
+
+
+```
+# To create Database in Lakehouse if it does not already exist.
+
+spark.sql("CREATE DATABASE IF NOT EXISTS Google_Custom_SearchDB")
+
+```
+
 ```
 # Save as delta table into Lakehouse Database
 
