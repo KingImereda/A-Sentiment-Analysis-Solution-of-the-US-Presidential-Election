@@ -130,7 +130,10 @@ This is done using the Data Factory Component of Fabric.
   - Test Data Factory connection to  API Data Source, by clicking on the " Test Connection" tab. Connection was successful, this prove that  Data Factory has establish connection to my Google CSE JSON API 
     source.
   - Preview Data, by clicking on the "Preview Data" tab
-  - ***IMAGE
+##### Screen Shot.
+
+![Screenshot 2024-09-04 173434](https://github.com/user-attachments/assets/4bbf27f7-b75c-4768-9870-e84f874f0b7d)
+
 - Click on "Destination" tab
   - On "Connection" field drop-down, select previously created Lakehouse Database "Google_Custom_SearchDB"
   - On " Root Folder" field, Choose "File".- File because I am copying the raw data in a JSON format.
@@ -141,15 +144,168 @@ This is done using the Data Factory Component of Fabric.
   - Click "Run" tab at the top, to run pipeline.
 ##### Data is Successfully copy from API source to Lakehouse DB
 
-*** IMAGE
+![Screenshot 2024-09-04 183123](https://github.com/user-attachments/assets/1754a1ed-27c6-4e8f-9fd4-e829911b5907)
 
 
+## DATA TRANSFORMAION(INCREMENTAL LOADING).
+This is done using Synapse Data Engineering Component of Fabric.
+- On the bottom left, click on the Power BI icon or whatever icon present there.
+- From the list of icons, choose Synapse Data Engineering. 
+- In Synapse Data Engineering environment, click on "Notebook" tab,-To create a Spark Notebook to "transform" the raw json file into a clean data table.
+- On the top-left, click on the Notebook name and rename appropriately foe ease referencing.
+Step 1.
+Use the created Notebook to import and read the raw json file that exist in stored Lakehouse Database.
+- On the Left, click on "Lakehouse" button.
+- On the left, click "Add Lakehouse" button.- This help in accessing the different tables and files that reside in the Lakehouse Database directly from the Notebook.
+- Choose "Existing Lakehouse".
+- Click "Add".
+- Check or choose the Lakehouse where the raw json data resides.
+- Click "Add".
+- From the imported Lakehouse Database to the left, click on "File " (-This shows all files that reside in the Lakehouse Database),then "..." , then "Load Data" 
+- There are two options (Spark or Pandas), Choose "Spark". 
+A code is automatically generated to read the raw json file as a Pyspark DataFrame.
+```
+df = spark.read.option("multiline", "true").json("Files/latest-news-US-presidential-election.json")
+# df now is a Spark DataFrame containing JSON data from "Files/latest-news-US-presidential-election.json".
+display(df)
+
+```
+- Then, "run" the cell.
+
+```
+#Select the items column where the nested data is and ignore the other columns.
+
+df = df.select(["items"])
+
+```
+```
+from pyspark.sql.functions import explode
+
+# Explode json object(items) as an alias(json_object)
+
+df_exploded = df.select(explode(df["items"]).alias("json_object"))
+
+```
+```
+# Converting the Exploded Json Dataframe to a single Json string list,i.e. "json_list" variable
+
+json_list = df_exploded.toJSON().collect()
+
+```
+```
+#Testing the JSON string list with the first news article
+
+print(json_list[0])
 
 
-C.DATA TRANSFORMAION(Incremental Loading)
+```
+```
+import json
+# Convert the JSON String to a JSON dictionary
 
+news_json =json.loads(json_list[7])
 
+```
+```
+# Testing the JSON Dictionary.
 
+display(news_json["json_object"]["snippet"])
+
+```
+```
+print(news_json["json_object"]["displayLink"])
+print(news_json["json_object"]["link"])
+print(news_json["json_object"]["kind"])
+print(news_json["json_object"]["pagemap"]["cse_image"])
+print(news_json["json_object"]["pagemap"]["cse_thumbnail"])
+print(news_json["json_object"]["pagemap"]["metatags"])
+print(news_json["json_object"]["title"])
+print(news_json["json_object"]["snippet"])
+
+```
+
+```
+# Processing all the json items from list[0-9].These columns capture  all the different information I want to extract fron the News/Articles c 
+# using for loop function to iterate all the News/Articles one after the other.
+
+import datetime
+# Needed to add a date column to the list, because not all news and opinion content has published date
+displayLink = []
+link = []
+kind = []
+pagemap = []
+title = []
+snippet = []
+date_fetched = []
+
+# Process each JSON object in the list
+for json_str in json_list:
+    try:
+        # Parse the JSON string into a dictionary
+        article = json.loads(json_str)
+
+        # Extract information from the dictionary
+        displayLink.append(article["json_object"]["displayLink"])
+        link.append(article["json_object"]["link"])
+        kind.append(article["json_object"]["kind"])
+        pagemap.append(article["json_object"]["pagemap"]["cse_image"])
+        pagemap.append(article["json_object"]["pagemap"]["cse_thumbnail"])
+        pagemap.append(article["json_object"]["pagemap"]["metatags"])
+        title.append(article["json_object"]["title"])
+        snippet.append(article["json_object"]["snippet"])
+
+        # Append the current date to the date list
+        date_fetched.append(datetime.datetime.now().strftime("%Y-%m-%d"))
+    except Exception as e:
+        print(f"Error processing JSON object {e}")
+
+```
+```
+# Create a new Dataframe with the Custom Schema defined
+
+from pyspark.sql.types import StructType, StructField, StringType
+
+# combine the list using the zip function to create the data.
+
+data = list(zip(displayLink,link,kind,pagemap,title,snippet,date_fetched))
+
+# Define schema for the Dataframe with the proper data type for all the columns in the Dataframe
+schema = StructType([
+    StructField("displayLink", StringType(), True),
+    StructField("link", StringType(), True),
+    StructField("kind", StringType(), True),
+    StructField("pagemap", StringType(), True),
+    StructField("title", StringType(), True),
+    StructField("snippet", StringType(), True),
+    StructField("date_fetched", StringType(), True),
+])
+
+#create Dataframe
+df_cleaned = spark.createDataFrame(data, schema=schema)
+
+```
+```
+display(df_cleaned)
+```
+
+![Screenshot 2024-09-06 110507](https://github.com/user-attachments/assets/cc82f1c4-3307-424f-8b01-0e1de665724a)
+
+```
+from pyspark.sql.functions import col
+# Renamed col [displayLink] to [provider] and col[link] to url
+
+df_cleaned_final = df_cleaned.withColumnRenamed("displayLink", "provider").withColumnRenamed("link","url")
+
+```
+##### Screenshot.
+
+![Screenshot 2024-09-06 111240](https://github.com/user-attachments/assets/ec34edb5-6a25-4140-bd2f-3c29a8a9f347)
+
+```
+# Save as delta table into Lakehouse Database
+
+df_cleaned_final.write.format("delta").mode("overwrite").saveAsTable("Google_Custom_SearchDB.tbl_latest_news")
+```
 
 D.SENTIMENT ANALYSIS(Incremental Loading)
 
