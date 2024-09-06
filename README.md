@@ -37,10 +37,11 @@ A Sentiment Analysis Report on US Presidential Election, 2024. This project is e
 
 ## Tools Used.
 - Google Custom Search Engine JSON API
-- Microsoft Fabric- Synapse Data Engineering Component.
-  - Data Factory-For Data Injestion.
+- Data Factory(Microsoft Fabric)-For Data Injestion.
 - Microsoft Fabric One Lake.
   - Lakehouse Database- For data storage.
+- Synapse Data Engineering(Microsoft fabric).
+  - Spark Nokebook-- For data transformation.
 
 ***SOLUTION ARCHITECTURE
 
