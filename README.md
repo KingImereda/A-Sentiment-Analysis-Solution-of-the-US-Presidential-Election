@@ -156,7 +156,7 @@ This is done using Synapse Data Engineering Component of Fabric.
 - From the list of icons, choose Synapse Data Engineering. 
 - In Synapse Data Engineering environment, click on "Notebook" tab,-To create a Spark Notebook to "transform" the raw json file into a clean data table.
 - On the top-left, click on the Notebook name and rename appropriately foe ease referencing.
-Step 1.
+##### Steps:
 Use the created Notebook to import and read the raw json file that exist in stored Lakehouse Database.
 - On the Left, click on "Lakehouse" button.
 - On the left, click "Add Lakehouse" button.- This help in accessing the different tables and files that reside in the Lakehouse Database directly from the Notebook.
@@ -347,13 +347,117 @@ except AnalysisException:
 
                    WHEN NOT MATCHED THEN INSERT *
               """)
+```
 
+## SENTIMENT ANALYSIS USING SYNAPSE MACHINE LEARNING(Incremental Loading).
+This is done using Synapse Data Science Component of Fabric.
+- On the bottom left, click on the Power BI icon or whatever icon present there.
+- From the list of icons, choose Synapse Data Science option. 
+- In Synapse Data science environment, click on "Notebook" tab,-To use pre-trained Machine Learning Model.
+- On the top-left, click on the Notebook name and rename appropriately for ease referencing.
+##### Steps:
+Use the created Notebook to import and read the cleaned data stored in a delta table in Lakehouse Database.
+- On the Left, click on "Lakehouse" button.
+- On the left, click "Add Lakehouse" button.- This help in accessing the different tables and files that reside in the Lakehouse Database directly from the Notebook.
+- Choose "Existing Lakehouse".
+- Click "Add".
+- Check or choose the Lakehouse where the data resides.
+- Click "Add".
+- From the imported Lakehouse Database to the left, click on "Tables " (-This shows tables that reside in the Lakehouse Database),then "..." , then "Load Data" 
+- Then, Choose "Spark".
+A code is automatically generated to read the raw delta table as a Pyspark DataFrame.
+```
+df = spark.sql("SELECT * FROM Google_Custom_SearchDB.Google_Custom_SearchDB.tbl_latest_news")
+display(df)
+```
+```
+# import the synapse ML library (Importing a pre-trained model called AnalyzeText)
 
+import synapse.ml.core
+from synapse.ml.services import AnalyzeText
+
+```
+
+```
+# CONFIGURING PRE-TRAINED MODEL
+```
+
+```
+# import the model and configure the input and output columns
+model = (AnalyzeText()
+        .setTextCol("snippet")
+        .setKind("SentimentAnalysis")
+        .setOutputCol("response")
+        .setErrorCol("error"))
+```
+
+```
+#Apply the model to our Dataframe
+result = model.transform(df)
+
+```
+```
+***display(result)
+
+```
+```
+
+![Screenshot 2024-09-07 122243](https://github.com/user-attachments/assets/9b0008e9-beb7-4451-9e8d-0b7fb0fbbae3)
+
+```
+##### Create sentiment column
+from pyspark.sql.functions import col
+
+***sentiment_df = result.withColumn("sentiment", col("response.documents.sentiment"))
+
+```
 
 
 ```
-D.SENTIMENT ANALYSIS(Incremental Loading)
+#drop unwanted columns (error and response) after they are have serve their purpose.
 
+***sentiment_df_final = sentiment_df.drop("error","response")
+
+```
+
+```
+# save result into delta table.
+
+from pyspark.sql.utils import AnalysisException
+
+try:
+    table_name = "Google_Custom_SearchDB.tbl_sentiment_analysis"
+    
+    # Try to save the DataFrame as a table
+    sentiment_df_final.write.format("delta").mode("append").saveAsTable(table_name)
+
+except AnalysisException as e:
+    if "Table or view already exists" in str(e):
+        print("Table Already Exists")
+        
+        # Create or replace a temporary view
+        sentiment_df_final.createOrReplaceTempView("vw_sentiment_df_final")
+        
+        # Perform the MERGE operation
+        spark.sql(f"""
+            MERGE INTO {table_name} target_table
+            USING vw_sentiment_df_final source_view
+            ON source_view.provider = target_table.provider
+            WHEN MATCHED AND (
+                source_view.url <> target_table.url OR
+                source_view.kind <> target_table.kind OR
+                source_view.pagemap <> target_table.pagemap OR
+                source_view.title <> target_table.title OR
+                source_view.snippet <> target_table.snippet OR
+                source_view.date_fetched <> target_table.date_fetched
+            )
+            THEN UPDATE SET *
+            WHEN NOT MATCHED THEN INSERT *
+        """)
+    else:
+        raise e
+
+```
 
 
 
