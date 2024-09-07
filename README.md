@@ -320,36 +320,51 @@ spark.sql("CREATE DATABASE IF NOT EXISTS Google_Custom_SearchDB")
 #The code effectively handles the scenario where the target table already exists by performing a MERGE operation to update existing rows and insert new ones based on specified conditions. This ensures that the #data in the Delta table remains up-to-date and consistent with the df_cleaned_final DataFrame. i.eSave the table in delta format and perform an incremental loading SCD_1
 
 from pyspark.sql.utils import AnalysisException
+from pyspark.sql.functions import col, max
 
-try:
-    
-    table_name = "Google_Custom_SearchDB.tbl_latest_news"
-    
+table_name = "Google_Custom_SearchDB.tbl_latest_news"
+
+def handle_table_exists():
+    # Create a unique version of the DataFrame to avoid conflicts during the MERGE operation
+    # Adjust the grouping and aggregation according to your specific key columns
+    df_cleaned_final_unique = df_cleaned_final.groupBy("provider").agg(
+        max("url").alias("url"),
+        max("kind").alias("kind"),
+        max("pagemap").alias("pagemap"),
+        max("title").alias("title"),
+        max("snippet").alias("snippet"),
+        max("date_fetched").alias("date_fetched")
+    )
+
+    # Register the cleaned DataFrame as a temp view
+    df_cleaned_final_unique.createOrReplaceTempView("vw_df_cleaned_final")
+
+    # Perform the MERGE operation
+    spark.sql(f"""
+        MERGE INTO {table_name} target_table
+        USING vw_df_cleaned_final source_view
+        ON source_view.provider = target_table.provider
+        WHEN MATCHED AND
+            (source_view.url <> target_table.url OR
+            source_view.kind <> target_table.kind OR
+            source_view.pagemap <> target_table.pagemap OR
+            source_view.title <> target_table.title OR
+            source_view.snippet <> target_table.snippet OR
+            source_view.date_fetched <> target_table.date_fetched)
+        THEN UPDATE SET *
+        WHEN NOT MATCHED THEN INSERT *
+    """)
+
+# Check if the table exists
+table_exists = spark.catalog.tableExists(table_name)
+
+if not table_exists:
+    # If the table doesn't exist, create it
     df_cleaned_final.write.format("delta").saveAsTable(table_name)
-
-except AnalysisException:
-
+    print("Table created successfully")
+else:
     print("Table Already Exists")
-
-    df_cleaned_final.createOrReplaceTempView("vw_df_cleaned_final")
-
-    spark.sql(f""" MERGE INTO {table_name} target_table
-                   USING vw_df_cleaned_final source_view
-
-                   ON source_view.provider = target_table.provider
-
-                   WHEN MATCHED AND
-                   source_view.url <> target_table.url OR
-                   source_view.kind <> target_table.kind OR
-                   source_view.pagemap <> target_table.pagemap OR
-                   source_view.title <> target_table.title OR
-                   source_view.snippet <> target_table.snippet OR
-                   source_view.date_fetched <> target_table.date_fetched 
-
-                   THEN UPDATE SET *
-
-                   WHEN NOT MATCHED THEN INSERT *
-              """)
+    handle_table_exists()
 ```
 
 ## SENTIMENT ANALYSIS USING SYNAPSE MACHINE LEARNING(Incremental Loading).
@@ -430,22 +445,33 @@ sentiment_df_final = sentiment_df.drop("error","response")
 ```
 # Save result into delta table.
 from pyspark.sql.utils import AnalysisException
+from pyspark.sql import functions as F
+
+table_name = "Google_Custom_SearchDB.tbl_sentiment_analysis"
+
+# Check if the table exists
+def check_table_exists(spark, table_name):
+    try:
+        return spark.catalog.tableExists(table_name)
+    except AnalysisException:
+        return False
 
 try:
-    table_name = "Google_Custom_SearchDB.tbl_sentiment_analysis"
-    
-    # Try to save the DataFrame as a table
-    sentiment_df_final.write.format("delta").mode("append").saveAsTable(table_name)
-
-except AnalysisException as e:
-    if "Table or view already exists" in str(e):
+    if not check_table_exists(spark, table_name):
+        # Save the DataFrame as a new Delta table if it doesn't exist
+        sentiment_df_final.write.format("delta").saveAsTable(table_name)
+        print(f"Table {table_name} created successfully.")
+    else:
         print("Table Already Exists")
-        
-        # Create or replace a temporary view
-        sentiment_df_final.createOrReplaceTempView("vw_sentiment_df_final")
-        
+
+        # Preprocess the source DataFrame to remove duplicates
+        sentiment_df_dedup = sentiment_df_final.dropDuplicates(subset=["provider"])
+
+        # Create or replace a temporary view for the deduplicated DataFrame
+        sentiment_df_dedup.createOrReplaceTempView("vw_sentiment_df_final")
+
         # Perform the MERGE operation
-        spark.sql(f"""
+        merge_query = f"""
             MERGE INTO {table_name} target_table
             USING vw_sentiment_df_final source_view
             ON source_view.provider = target_table.provider
@@ -459,9 +485,14 @@ except AnalysisException as e:
             )
             THEN UPDATE SET *
             WHEN NOT MATCHED THEN INSERT *
-        """)
-    else:
-        raise e
+        """
+        # Execute the MERGE statement
+        spark.sql(merge_query)
+        print("Table merged successfully with new data.")
+
+except Exception as e:
+    print(f"An error occurred: {str(e)}")
+
 
 ```
 
