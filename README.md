@@ -396,33 +396,36 @@ model = (AnalyzeText()
 result = model.transform(df)
 
 ```
-```
-***display(result)
 
-```
-```
 
-![Screenshot 2024-09-07 122243](https://github.com/user-attachments/assets/9b0008e9-beb7-4451-9e8d-0b7fb0fbbae3)
+![Screenshot 2024-09-07 150935](https://github.com/user-attachments/assets/ddd4ff02-9ea1-4d7d-8677-faa05adb8cf2)
+
+##### Save result as delta table.
 
 ```
 ##### Create sentiment column
 from pyspark.sql.functions import col
 
-***sentiment_df = result.withColumn("sentiment", col("response.documents.sentiment"))
+sentiment_df = result.withColumn("sentiment", col("response.documents.sentiment"))
 
 ```
 
+
+![Screenshot 2024-09-07 151947](https://github.com/user-attachments/assets/f509a391-b172-4b13-9a8d-288d52ff3f1e)
 
 ```
 #drop unwanted columns (error and response) after they are have serve their purpose.
 
-***sentiment_df_final = sentiment_df.drop("error","response")
+sentiment_df_final = sentiment_df.drop("error","response")
 
 ```
 
-```
-# save result into delta table.
+![Screenshot 2024-09-07 152148](https://github.com/user-attachments/assets/8ced405a-9a80-4a47-9914-111d61f6da1b)
 
+#### Save final result and perform incremental loading of Type 1 for new and updated records.
+
+```
+# Save result into delta table.
 from pyspark.sql.utils import AnalysisException
 
 try:
