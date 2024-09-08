@@ -81,7 +81,7 @@ Create and configure a Google Custom Search Engine API as real-time data source.
  - Copy API Key  to secure place. The same API as the first API
  - Click DONE
 Back on The Programmable Search Engine
- - Click on the highlighted "Control Panel". A new window appears< Create a new search engine>
+ - Click on the highlighted "Control Panel". A new window appears ( Create a new search engine)
  - Field (Name Your Search Engine) : "Business Insight"
  - Field (What to search) : "Search the entire web"
  - Field (Search Setting) : Check "Image Search" and "Safe Search"
