@@ -465,8 +465,7 @@ from pyspark.sql import functions as F
 
 table_name = "Election.tbl_sentiment_analysis"
 
-# Check if t# Save result into delta table.
-he table exists
+# Check if the table exists
 def check_table_exists(spark, table_name):
     try:
         return spark.catalog.tableExists(table_name)
@@ -509,7 +508,6 @@ try:
 
 except Exception as e:
     print(f"An error occurred: {str(e)}")
-
 ```
 
 ## Building Report Using Power BI:
