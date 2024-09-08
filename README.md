@@ -44,9 +44,13 @@ A Sentiment Analysis Report on US Presidential Election, 2024. This project is e
 - ##### Synapse Data Engineering(Microsoft fabric).
   - Spark Notebook-- For data transformation.
   - Lakehouse Database.
-- #### Synapse Data Science(Microsoft Fabric).
-- Spark Notebook-- For pre-trained Machine Learning Model.
-- Lakehouse Database.
+- ##### Synapse Data Science(Microsoft Fabric).
+  - Spark Notebook-- For pre-trained Machine Learning Model.
+  - Lakehouse Database.
+- ##### Power BI(Microsoft Fabric).
+  - Semantic Model.
+  - Data Analysis Expression (DAX)
+  - Visualizations.
 
 ***SOLUTION ARCHITECTURE
 
@@ -506,13 +510,104 @@ try:
 except Exception as e:
     print(f"An error occurred: {str(e)}")
 
+```
+
+## Building Report Using Power BI:
+
+Building Our Report With sentiment_df_final table.
+##### Steps:
+First, we need to build a Semantic Model by establishing a connection between Power BI and our Lakehouse Database. 
+Semantic Model is an advance concept of Entity Relation Diagram(ERD)  with focus on business logic, metrics, and relationships that are meaningful for decision-making.
+Steps:
+Create A Semantic Model
+- Go to the Lakehouse Database.
+- On the left, click on Tables, choose "sentiment_df_final" table- The table we are using for the report.
+- At the top, click on "New Semantic Model"
+- from the drop-down, name your "Semantic Model" e.g. -sentiment-dashboard-dataset.
+- Scroll down, select the table(s) you want to include the semantic model, then  click (Confirm)
+
+##### Using The Auto Create Report.
+
+- Move back to your workspace.
+- In your workspace, you will seethe drop-down of all the resources you have created in your workspace.
+- select the Semantic Model.
+- At the top, under "Discover Business Insights", click on the drop-down arrow on "Explore this Data"--> choose "Auto Create Report" option.
+
+##### Let's Edit this Auto Created Report Further To Build Our Dashboard.
+
+- Click on  "Edit" tab at the top. Then, continue.
+- At the bottom of the page, click on "+" to create a blank new page for our visuals.
+- From the "visualizations" pane to your right, click on the table icon to have an empty table on the canvas
+- Add the required columns to the table by clicking on the name of the imported Semantic table below "Data" tab drop-down at the top right--to reveal all  available columns
+
+### Creating Measures(Data Analysis Expression) for the Sentiment % of the latest News & Opinions On US Presidential Election.
+##### Measures are use to calculate aggregations using DAX and the difference between Measures and Calculated Column or Derived Column is that while Measures are used for Dynamic calculations that changes base on context of the report (Slicer, filters ). Calculated /Derived Columns are use to perform Static Calculations that are done Once and stored or loaded into the data model. It does not depend on Filter or Slicer Context.
+
+-To create Measures, Go to Data Model by clicking on "Semantic Model" Icon to your left.
+- At the top, click on "Open Data Model"
+- At the top-left, under Home, click on "New Measures"
+- Then, write your DAX code to create the Measures "Positive Sentiment %","Negative Sentiment %" and "Neutral Sentiments %":
+##### Positive Sentiments:
+```
+Positive Sentiment % =
+IF (
+    COUNTROWS (FILTER ( 'tbl_sentiment_analysis', 'tbl_sentiment_analysis'[sentiment] = "positive" )) > 0,
+    DIVIDE (
+        CALCULATE (
+            COUNTROWS(FILTER ( 'tbl_sentiment_analysis', 'tbl_sentiment_analysis'[sentiment] = "positive" ))
+        ),
+        COUNTROWS('tbl_sentiment_analysis')
+    )*100,
+    0
+)
+
 
 ```
 
+##### Negative Sentiments:
+ 
+```
+
+Negative Sentiment % =
+IF (
+    COUNTROWS (FILTER ( 'tbl_sentiment_analysis', 'tbl_sentiment_analysis'[sentiment] = "negative" )) > 0,
+    DIVIDE (
+        CALCULATE (
+            COUNTROWS(FILTER ( 'tbl_sentiment_analysis', 'tbl_sentiment_analysis'[sentiment] = "negative" ))
+        ),
+        COUNTROWS('tbl_sentiment_analysis')
+    )*100,
+    0
+)
+
+```
+##### Neutral Sentiments:
+
+```
+Neutral Sentiment % =
+IF (
+    COUNTROWS (FILTER ( 'tbl_sentiment_analysis', 'tbl_sentiment_analysis'[sentiment] = "neutral" )) > 0,
+    DIVIDE (
+        CALCULATE (
+            COUNTROWS(FILTER ( 'tbl_sentiment_analysis', 'tbl_sentiment_analysis'[sentiment] = "neutral" ))
+        ),
+        COUNTROWS('tbl_sentiment_analysis')
+    )*100,
+    0
+)
+
+
+```
+- Then, go back to your dashboard to continue editing using the "Card"  visuals to apply your created Measures.
+- Click "Edit" at the top to add visuals.
 
 
 
-E.DATA REPORTING
+
+
+
+
+
 
 
 
