@@ -127,10 +127,12 @@ This is done using the Data Factory Component of Fabric.
 - Then, click "Create" to create Data Factory Pipeline.
 - At the top, click on "Copy Data" tab, from the drop-down, choose "Add to Canvas" to copy data from Source(Google CSE JSON API) to Destination(Lakehouse Database)
 - In Data Factory canvas --> "General" tab --> "Name" : Copy latest news-opinions.
+- ##### Click on Source tab.
 - Then Click on "Source" tab. To configure Source Connection.
   - In "Connection" field, Click on the drop-down and select "more"(because our data source is outside of Fabric Environment)
   - New Sources--> click on "View more"-->Scroll down and select "REST" from variety of options. REST is the resource use for connecting to APIs
-  - On "Connection Setting" heading-->Base URL, input Endpoint and Query Parameter(s) " https://www.googleapis.com/customsearch/v1?q=YOUR_QUERY&cx=YOUR_ENGINE_ID&key=YOUR_API_KEY&q=SEARCH_QUERY "
+  - On "Connection Setting" heading-->Base URL, input Endpoint and Query Parameter(s) " https://www.googleapis.com/customsearch/v1?key=AIzaSyDiEhYXncP-RJf-tJ- 
+    J5jrt73246yWTUww&cx=06d6d810465d04d97&q=US+presidential+election&hq=latest+news+opinions "
   - On "Connection Credentials" sub-heading-->, input connection name for ease of reference purpose, say "News_Opinions"
   - Then, click "Connect"
   - Test Data Factory connection to  API Data Source, by clicking on the " Test Connection" tab. Connection was successful, this prove that  Data Factory has establish connection to my Google CSE JSON API 
@@ -140,14 +142,14 @@ This is done using the Data Factory Component of Fabric.
 
 ![Screenshot 2024-09-04 173434](https://github.com/user-attachments/assets/4bbf27f7-b75c-4768-9870-e84f874f0b7d)
 
-- Click on "Destination" tab
-  - On "Connection" field drop-down, select previously created Lakehouse Database "Google_Custom_SearchDB"
-  - On " Root Folder" field, Choose "File".- File because I am copying the raw data in a JSON format.
-  - On "File Path" field, Leave the "Directory" field empty. Fill the "File Name" with a file name, say<latest-US-election-news-opinion.json>. This will be the file name in the of copy data in destination 
-    Lakehouse DB.
-  -On "File Format" field drop-down, choose "JSON"
-  - Then, click on the "save" tab at the top-left to save the pipeline
-  - Click "Run" tab at the top, to run pipeline.
+- ##### Click on "Destination" tab
+   - On "Connection" field drop-down, select previously created Lakehouse Database "Google_Custom_SearchDB"
+   - On " Root Folder" field, Choose "File".- File because I am copying the raw data in a JSON format.
+   - On "File Path" field, Leave the "Directory" field empty. Fill the "File Name" with a file name, say<latest-US-election-news-opinion.json>. This will be the file name in the of copy data in destination 
+     Lakehouse DB.
+   - On "File Format" field drop-down, choose "JSON"
+   - Then, click on the "save" tab at the top-left to save the pipeline
+   - Click "Run" tab at the top, to run pipeline.
 ##### Data is Successfully copy from API source to Lakehouse DB
 
 ![Screenshot 2024-09-04 183123](https://github.com/user-attachments/assets/1754a1ed-27c6-4e8f-9fd4-e829911b5907)
@@ -167,7 +169,7 @@ Use the created Notebook to import and read the raw json file that exist in stor
 - Click "Add".
 - Check or choose the Lakehouse where the raw json data resides.
 - Click "Add".
-- From the imported Lakehouse Database to the left, click on "File " (-This shows all files that reside in the Lakehouse Database),then "..." , then "Load Data" 
+- From the imported Lakehouse Database to the left, choose DB where needed data or "File " (-This shows all files that reside in the Lakehouse Database),then "..." , then "Load Data" 
 - There are two options (Spark or Pandas), Choose "Spark". 
 A code is automatically generated to read the raw json file as a Pyspark DataFrame.
 ```
@@ -189,13 +191,16 @@ from pyspark.sql.functions import explode
 
 # Explode json object(items) as an alias(json_object)
 
-df_exploded = df.select(explode(df["items"]).alias("json_object"))
+df_explode = df.select(explode(df["items"]).alias("json_object"))
 
+```
+```
+display(df_explode)
 ```
 ```
 # Converting the Exploded Json Dataframe to a single Json string list,i.e. "json_list" variable
 
-json_list = df_exploded.toJSON().collect()
+json_list = df_explode.toJSON().collect()
 
 ```
 ```
@@ -310,19 +315,12 @@ df_cleaned_final = df_cleaned.withColumnRenamed("displayLink", "provider").withC
 
 
 ```
-# To create Database in Lakehouse if it does not already exist.
-
-spark.sql("CREATE DATABASE IF NOT EXISTS Google_Custom_SearchDB")
-
-```
-
-```
 #The code effectively handles the scenario where the target table already exists by performing a MERGE operation to update existing rows and insert new ones based on specified conditions. This ensures that the #data in the Delta table remains up-to-date and consistent with the df_cleaned_final DataFrame. i.eSave the table in delta format and perform an incremental loading SCD_1
 
 from pyspark.sql.utils import AnalysisException
 from pyspark.sql.functions import col, max
 
-table_name = "Google_Custom_SearchDB.tbl_latest_news"
+table_name = "Election.tbl_latest_news"
 
 def handle_table_exists():
     # Create a unique version of the DataFrame to avoid conflicts during the MERGE operation
@@ -385,7 +383,8 @@ Use the created Notebook to import and read the cleaned data stored in a delta t
 - Then, Choose "Spark".
 A code is automatically generated to read the raw delta table as a Pyspark DataFrame.
 ```
-df = spark.sql("SELECT * FROM Google_Custom_SearchDB.Google_Custom_SearchDB.tbl_latest_news")
+# please remove the "Limit 1000"
+df = spark.sql("SELECT * FROM Election.tbl_latest_news ")
 display(df)
 ```
 ```
@@ -415,16 +414,26 @@ result = model.transform(df)
 
 ```
 
+```
+display(result)
+
+```
 
 ![Screenshot 2024-09-07 150935](https://github.com/user-attachments/assets/ddd4ff02-9ea1-4d7d-8677-faa05adb8cf2)
 
 ##### Save result as delta table.
 
 ```
-##### Create sentiment column
+# Create sentiment column
 from pyspark.sql.functions import col
 
 sentiment_df = result.withColumn("sentiment", col("response.documents.sentiment"))
+
+```
+
+```
+# Show result
+display(sentiment_df)
 
 ```
 
@@ -438,18 +447,22 @@ sentiment_df_final = sentiment_df.drop("error","response")
 
 ```
 
+```
+display(sentiment_df_final)
+```
+
 ![Screenshot 2024-09-07 152148](https://github.com/user-attachments/assets/8ced405a-9a80-4a47-9914-111d61f6da1b)
 
 #### Save final result and perform incremental loading of Type 1 for new and updated records.
 
 ```
-# Save result into delta table.
 from pyspark.sql.utils import AnalysisException
 from pyspark.sql import functions as F
 
-table_name = "Google_Custom_SearchDB.tbl_sentiment_analysis"
+table_name = "Election.tbl_sentiment_analysis"
 
-# Check if the table exists
+# Check if t# Save result into delta table.
+he table exists
 def check_table_exists(spark, table_name):
     try:
         return spark.catalog.tableExists(table_name)
