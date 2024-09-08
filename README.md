@@ -455,6 +455,14 @@ sentiment_df_final = sentiment_df.drop("error","response")
 display(sentiment_df_final)
 ```
 
+```
+from pyspark.sql.functions import col, to_date
+
+# Convert the date_fetched column from string to date. ***Note that in "Election.tbl_latest_news, the date column is string which need to be converted to date format
+sentiment_df_final = sentiment_df_final.withColumn("date_fetched", to_date(col("date_fetched"), "yyyy-MM-dd"))
+
+```
+
 ![Screenshot 2024-09-07 152148](https://github.com/user-attachments/assets/8ced405a-9a80-4a47-9914-111d61f6da1b)
 
 #### Save final result and perform incremental loading of Type 1 for new and updated records.
