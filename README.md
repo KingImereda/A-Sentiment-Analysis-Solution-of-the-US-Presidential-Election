@@ -41,7 +41,7 @@ A Sentiment Analysis Report on US Presidential Election, 2024. This project is e
 - ##### Data Factory(Microsoft Fabric)-For Data Injestion.
   - Google Custom Search Engine JSON API- Source.
   - Lakehouse Database- For data storage- Target.
-  - Scheduling our Pipeline
+  - Scheduling and Pipeline Monitor.
 - ##### Synapse Data Engineering(Microsoft fabric).
   - Spark Notebook-- For data transformation.
   - Lakehouse Database.
@@ -58,8 +58,8 @@ A Sentiment Analysis Report on US Presidential Election, 2024. This project is e
 STEPS
 
 
-## ENVIRONMENT SETUP
-### 1.DATA SOURCE 
+## ENVIRONMENT SETUP.
+### 1.DATA SOURCE. 
 Create and configure a Google Custom Search Engine API as real-time data source.
 #### Prerequisite: A Gmail account.
 -Steps:
@@ -73,31 +73,31 @@ Create and configure a Google Custom Search Engine API as real-time data source.
  - Click "Enable"
  - To the top-left, click on "Credentials" button.
  - At the top, click "+ Create Credentials"
- - From the drop-down, click "API Key"
- - Copy and save generated API key in a secure place, then  click close button
+ - From the drop-down, click "API Key".
+ - Copy and save generated API key in a secure place, then  click close button.
  - Then click on "Enable APIs & Service" to the left.
  - Then, click on "Custom Search API" below.
  - To your mid-right, under (Explore), click "TRY IN API EXPLORER". This take you to a new window.
- - Click on "Get A KEY"
- - An "Enable Custom Search API" title appears, click on the drop-down (Select or Create Project)
- - Pick the name of the project you created in step 4 above (My Google Search API 2)
- - Click NEXT
+ - Click on "Get A KEY".
+ - An "Enable Custom Search API" title appears, click on the drop-down (Select or Create Project).
+ - Pick the name of the project you created in step 4 above (My Google Search API 2).
+ - Click NEXT.
  - Click on "SHOW KEY"
- - Copy API Key  to secure place. The same API as the first API
- - Click DONE
-Back on The Programmable Search Engine
- - Click on the highlighted "Control Panel". A new window appears ( Create a new search engine)
- - Field (Name Your Search Engine) : "Business Insight"
- - Field (What to search) : "Search the entire web"
- - Field (Search Setting) : Check "Image Search" and "Safe Search"
- - Click "Create"
-##### Your New Search Engine has been created . Copy the Search Engine ID
+ - Copy API Key  to secure place. The same API as the first API.
+ - Click DONE.
+Back on The Programmable Search Engine.
+ - Click on the highlighted "Control Panel". A new window appears ( Create a new search engine).
+ - Field (Name Your Search Engine) : "Business Insight".
+ - Field (What to search) : "Search the entire web".
+ - Field (Search Setting) : Check "Image Search" and "Safe Search".
+ - Click "Create".
+##### Your New Search Engine has been created . Copy the Search Engine ID.
 
-##### Use this Code Snippet as your Google CSE JSON API call
+##### Use this Code Snippet as your Google CSE JSON API call.
 
 - https://www.googleapis.com/customsearch/v1?key=YOUR_API_KEY&cx=YOUR_SEARCH_ENGINE_ID&q=SEARCH_QUERY&searchType=image
 
-##### Where
+##### Where.
 - Customize Google URL for your CSE = (https://www.googleapis.com/customsearch/v1) 
 - Key Or API Key = YOUR_API_KEY
 - cx = YOUR_SEARCH_ENGINE_ID
