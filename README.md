@@ -41,6 +41,7 @@ A Sentiment Analysis Report on US Presidential Election, 2024. This project is e
 - ##### Data Factory(Microsoft Fabric)-For Data Injestion.
   - Google Custom Search Engine JSON API- Source.
   - Lakehouse Database- For data storage- Target.
+  - Scheduling our Pipeline
 - ##### Synapse Data Engineering(Microsoft fabric).
   - Spark Notebook-- For data transformation.
   - Lakehouse Database.
@@ -406,10 +407,10 @@ from synapse.ml.services import AnalyzeText
 ```
 # import the model and configure the input and output columns
 model = (AnalyzeText()
-        .setTextCol("snippet")
-        .setKind("SentimentAnalysis")
-        .setOutputCol("response")
-        .setErrorCol("error"))
+        .setTextCol("snippet")    # Column in which to predict the sentiment
+        .setKind("SentimentAnalysis") #There are different text analysis ML task such as predicting the sentiment of a text, language detector of a text,and so on. In this project we are using sentiment Analysis
+        .setOutputCol("response")       # Specifying the column name to store the actual output the machine learningmodel generates. Here we have specify the output column to be response.
+        .setErrorCol("error"))         #This is an error column, should something go wrong during the ML task it willcapture it and if all goes well, this column will have its value as null.
 ```
 
 ```
