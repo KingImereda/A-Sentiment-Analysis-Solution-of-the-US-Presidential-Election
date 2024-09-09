@@ -1,4 +1,4 @@
-# Voter Sentiment and News Analytics for US Presidential Race using Microsoft Fabric.
+# An End-to-End Sentiment Analysis Solution for the US Presidential Election using Microsoft Fabric.
 
 ## Project Overview.
 
