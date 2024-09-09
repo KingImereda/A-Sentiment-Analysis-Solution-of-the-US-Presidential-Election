@@ -59,7 +59,7 @@ STEPS
 
 
 ## ENVIRONMENT SETUP.
-### 1.DATA SOURCE. 
+### Configuring Data Source. 
 Create and configure a Google Custom Search Engine API as real-time data source.
 #### Prerequisite: A Gmail account.
 -Steps:
@@ -103,7 +103,7 @@ Back on The Programmable Search Engine.
 - cx = YOUR_SEARCH_ENGINE_ID
 - q = SEARCH_QUERY&searchType=image
 
-### Fabric Workspace.
+### Configuring Fabric Workspace.
 Create and configure Power BI Workspace for this project
 ##### Prerequisite: Enable Microsoft Fabric in Power BI Account as an Admin or Tenant.
 - Go to www.app.powerbi.com
@@ -114,7 +114,7 @@ Create and configure Power BI Workspace for this project
  - Scroll downward to "Advance" assign licensing to the workspace by clicking on "Trial" if you using trial version or " Premium Capacity" if you are using premium license.
  - Click Apply button
 
-### Data Storage.
+### Configuring Data Storage.
 ##### Create and configure Storage in Fabric environment, i.e. Lakehouse Database.
 Switch from Power BI environment to Data Engineering environment
 - Click on the Power BI icon on the bottom left.
@@ -316,7 +316,6 @@ df_cleaned_final = df_cleaned.withColumnRenamed("displayLink", "provider").withC
 ##### Screenshot.
 
 ![Screenshot 2024-09-06 111240](https://github.com/user-attachments/assets/ec34edb5-6a25-4140-bd2f-3c29a8a9f347)
-
 
 
 ```
@@ -547,7 +546,7 @@ Create A Semantic Model
 - From the "visualizations" pane to your right, click on the table icon to have an empty table on the canvas
 - Add the required columns to the table by clicking on the name of the imported Semantic table below "Data" tab drop-down at the top right--to reveal all  available columns
 
-### Creating Measures(Data Analysis Expression) for the Sentiment % of the latest News & Opinions On US Presidential Election.
+##### Creating Measures(Data Analysis Expression) for the Sentiment % of the latest News & Opinions On US Presidential Election.
 ##### Measures are use to calculate aggregations using DAX and the difference between Measures and Calculated Column or Derived Column is that while Measures are used for Dynamic calculations that changes base on context of the report (Slicer, filters ). Calculated /Derived Columns are use to perform Static Calculations that are done Once and stored or loaded into the data model. It does not depend on Filter or Slicer Context.
 
 -To create Measures, Go to Data Model by clicking on "Semantic Model" Icon to your left.
@@ -609,7 +608,7 @@ IF (
 - Click "Edit" at the top to add visuals.
 
 
-#### Building Pipeline Using Data Factory.
+## Orchestrating Pipeline Using Data Factory.
 Creating Pipeline using Data Factory to orchestrate everything that we have done so far in this end to end project.
 - Go into your workspace
 - Click on your Data Factory Pipeline
@@ -620,7 +619,7 @@ Creating Pipeline using Data Factory to orchestrate everything that we have done
 - Connect the "Copy Data" to the "Notebook" using  "On Success"
 - "General" tab --> "Name (Input: "Data Transformation") 
 - "Settings" tab --> "workspace"(from the drop-down, choose the name of your workspace)--> Then, "Notebook" (from the drop-down, choose the Notebook you used for data transformation)
-#### Again.
+##### Again.
 - Click on "Notebook" at the top right.
 - Connect the "Data Transformation" Notebook to the  new "Notebook" using  "On Success"
 - "General" tab --> "Name (Input: "Sentiment Analysis") 
@@ -631,6 +630,18 @@ Creating Pipeline using Data Factory to orchestrate everything that we have done
 
 
 ![Screenshot 2024-09-08 172946](https://github.com/user-attachments/assets/fb91c8a2-e10d-4c74-8806-31ccc0b6507e)
+
+##### Schedule Pipeline To Run Once Every Day AT 11: 00 AM GMT + 1
+
+The pipeline will  be automatically triggered at 11: am in the morning, ingesting the latest news and opinion on US Presidential Election and predicted the sentiment while updating the Power BI report with the latest News and Opinions about the US Presidential election.
+- 
+- In Data Factory canvas, click on "Schedule" button  at the top.
+- Check the radio button "ON" under Schedule Run.
+- From "Repeat" drop-down, Pick "Daily" --To choose pipeline run frequency option.
+- Under "Time", pick the time you want  to schedule the pipeline to run, say 11:00 AM GMT +1
+- Select the start date-time and end date-time of your schedule pipeline run from the "Start Date and Time" and "End Date and Time" calendar.
+- "Time Zone" .You have the option of selecting your time zone, but the default is the time zone of you are based on, so it's advisable to go with the default time zone.
+- Then, click "Apply"
 
 
 
