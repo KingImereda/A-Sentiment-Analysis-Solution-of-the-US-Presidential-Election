@@ -41,7 +41,7 @@ A Sentiment Analysis Report on US Presidential Election, 2024. This project is e
 - ##### Data Factory(Microsoft Fabric)-For Data Injestion.
   - Google Custom Search Engine JSON API- Source.
   - Lakehouse Database- For data storage- Target.
-  - Scheduling and Pipeline Monitor.
+  - Schedule and Monitor Pipeline.
 - ##### Synapse Data Engineering(Microsoft fabric).
   - Spark Notebook-- For data transformation.
   - Lakehouse Database.
@@ -634,7 +634,7 @@ Creating Pipeline using Data Factory to orchestrate everything that we have done
 ##### Schedule Pipeline To Run Once Every Day AT 11: 00 AM GMT + 1
 
 The pipeline will  be automatically triggered at 11: am in the morning, ingesting the latest news and opinion on US Presidential Election and predicted the sentiment while updating the Power BI report with the latest News and Opinions about the US Presidential election.
-- 
+
 - In Data Factory canvas, click on "Schedule" button  at the top.
 - Check the radio button "ON" under Schedule Run.
 - From "Repeat" drop-down, Pick "Daily" --To choose pipeline run frequency option.
@@ -642,6 +642,14 @@ The pipeline will  be automatically triggered at 11: am in the morning, ingestin
 - Select the start date-time and end date-time of your schedule pipeline run from the "Start Date and Time" and "End Date and Time" calendar.
 - "Time Zone" .You have the option of selecting your time zone, but the default is the time zone of you are based on, so it's advisable to go with the default time zone.
 - Then, click "Apply"
+
+##### Pipeline Monitor.
+- Go to Data Factory
+- Click "View Run History" tab at the top.--You will see recent run of your pipeline. Better still you can proceed to
+- "Go to Monitoring hub" at the bottom-left
+-  Then, click "Go to Monitoring hub"
+
+
 
 
 
