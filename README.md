@@ -52,6 +52,13 @@ A Sentiment Analysis Report on US Presidential Election, 2024. This project is e
   - Semantic Model.
   - Data Analysis Expression (DAX)
   - Visualizations.
+- ##### Data Activator(Microsoft Fabric)
+
+
+
+##### Screen Shot of tools used.
+
+![Screenshot 2024-09-09 165128](https://github.com/user-attachments/assets/7e6e5ddd-f654-4ba7-af27-93e6273fa7d9)
 
 ***SOLUTION ARCHITECTURE
 
@@ -649,23 +656,25 @@ The pipeline will  be automatically triggered at 11: am in the morning, ingestin
 - "Go to Monitoring hub" at the bottom-left
 -  Then, click "Go to Monitoring hub"
 
+## SETTING UP ALERT IN POWER BI REPORT USING Data Activator.
+- Go to your workspace in Fabric.
+- Power BI report
+##### To configure your alert, you have to pick a visual to upon which you want to configure the alert. In our case , we are picking the "Positive Sentiment %" card
+- Click on the "Positive Sentiment %" card, under it click on three dots "..."
+- From the drop-down, choose "set alert"
+- On the right side, under "set an alert" --> "Visual" drop-down, pick the visual you want to set an alert on, say (Card 3)
+- Under "Condition" --> 
+   - "Measure": from the drop-down, pick card you want to create alert on, say (Positive Sentiment %)
+   - "Operators": from the drop-down, pick the 'operator' you want for your alert say (Become greater than)
+   - "Value", Specify the numerical value you are using as you condition, say (20)
+- Action --> (Outlook email or Teams message)pick one that is suitable to you, say (Outlook email)
+- Click "show save option"
+- Under "My Workspace" select your workspace name
+- Under "item" click on "Create a new reflex item"
+- Under "Item name" input your item name, say (Positive Sentiment Item)
+- Then, click "Create" to create the alert.
+- Then, click on "Open Data Activator" -- To find all the information regarding the alert created
 
 
 
 
-
-
-
-
-
-
-
-F.BUILDING PIPELINES
-
-
-
-G.SETTING UP ALERTS(Using Data Activator)
-
-
-
-H.END TO END TESTING
