@@ -2,7 +2,7 @@
 
 ## Project Overview.
 
-A Sentiment Analysis Report on US Presidential Election, 2024. This project is executed using Microsoft Fabric as a collaborative platform which require Data Engineering, Data Science and Data Analytic skill.
+A Sentiment Analysis Report on US Presidential Election, 2024. This project was executed using Microsoft Fabric as a collaborative platform which require Data Engineering, Data Science and Data Analytic skill.
 
 ### Statement of Problem.
 
@@ -14,7 +14,7 @@ A Sentiment Analysis Report on US Presidential Election, 2024. This project is e
 
 ### Project Goal.
 
-- Develop a data-driven solution to analyze global News and opinions data from the web to generate actionable insights.
+- Develop a data-driven solution to analyze global News and opinion data from the web to generate actionable insights.
 
 - Improve decision-making processes and gain a competitive advantage.
 
@@ -24,8 +24,8 @@ A Sentiment Analysis Report on US Presidential Election, 2024. This project is e
 
 2. Use  Data Factory in Fabric environment to ingest data(in Jason format) from  Google Custom Search Engine API into Lake Database (Subset of One-Lake Storage in Microsoft Fabric).
 
-3. Transform the data(Jason Format) in One Lake Storage into proper table structure that has pre-defined Schema and this table will be stored as a Delta tables through using Synapse Data Engineering Microsoft 
-   Fabric tool. A Spark Notebook is use to clean and transform the Jason file into cleaned data store in  delta tables.
+3. Transform the data(Jason Format) in One Lake Storage into proper table structure that has pre-defined Schema and this table will be stored as a Delta tables through using Synapse Data Engineering-Microsoft 
+   Fabric tool. A Spark Notebook is used to clean and transform the Jason file into cleaned data store in  delta tables.
   
 4. Use the Synapse Data Science Tool to predict the sentiment of the ingested News data, using the Text Analysis model and load the final data to the Lake database.
 
@@ -151,7 +151,7 @@ This is done using the Data Factory Component of Fabric.
     J5jrt73246yWTUww&cx=06d6d810465d04d97&q=US+presidential+election&hq=latest+news+opinions "
   - On "Connection Credentials" sub-heading-->, input connection name for ease of reference purpose, say "News_Opinions"
   - Then, click "Connect"
-  - Test Data Factory connection to  API Data Source, by clicking on the " Test Connection" tab. Connection was successful, this prove that  Data Factory has establish connection to my Google CSE JSON API 
+  - Test Data Factory connection to  API Data Source, by clicking on the " Test Connection" tab. Connection was successful, this prove that  Data Factory has establish connection to our Google CSE JSON API 
     source.
   - Preview Data, by clicking on the "Preview Data" tab
 ##### Screen Shot.
@@ -160,13 +160,13 @@ This is done using the Data Factory Component of Fabric.
 
 - ##### Click on "Destination" tab
    - On "Connection" field drop-down, select previously created Lakehouse Database "Google_Custom_SearchDB"
-   - On " Root Folder" field, Choose "File".- File because I am copying the raw data in a JSON format.
+   - On " Root Folder" field, Choose "File".- File because we are copying the raw data in a JSON format.
    - On "File Path" field, Leave the "Directory" field empty. Fill the "File Name" with a file name, say<latest-US-election-news-opinion.json>. This will be the file name in the of copy data in destination 
      Lakehouse DB.
    - On "File Format" field drop-down, choose "JSON"
    - Then, click on the "save" tab at the top-left to save the pipeline
    - Click "Run" tab at the top, to run pipeline.
-##### Data is Successfully copy from API source to Lakehouse DB
+##### Data is Successfully copied from API source to Lakehouse DB
 
 ![Screenshot 2024-09-04 183123](https://github.com/user-attachments/assets/1754a1ed-27c6-4e8f-9fd4-e829911b5907)
 
@@ -176,11 +176,11 @@ This is done using Synapse Data Engineering Component of Fabric.
 - On the bottom left, click on the Power BI icon or whatever icon present there.
 - From the list of icons, choose Synapse Data Engineering. 
 - In Synapse Data Engineering environment, click on "Notebook" tab,-To create a Spark Notebook to "transform" the raw json file into a clean data table.
-- On the top-left, click on the Notebook name and rename appropriately foe ease referencing.
+- On the top-left, click on the Notebook name and rename appropriately for easy referencing.
 ##### Steps:
-Use the created Notebook to import and read the raw json file that exist in stored Lakehouse Database.
+Use the created Notebook to import and read the raw json file that exists in stored Lakehouse Database.
 - On the Left, click on "Lakehouse" button.
-- On the left, click "Add Lakehouse" button.- This help in accessing the different tables and files that reside in the Lakehouse Database directly from the Notebook.
+- On the left, click "Add Lakehouse" button.- This helps in accessing the different tables and files that reside in the Lakehouse Database directly from the Notebook.
 - Choose "Existing Lakehouse".
 - Click "Add".
 - Check or choose the Lakehouse where the raw json data resides.
@@ -380,16 +380,16 @@ else:
     handle_table_exists()
 ```
 
-## SENTIMENT ANALYSIS USING SYNAPSE MACHINE LEARNING(Incremental Loading).
-This is done using Synapse Data Science Component of Fabric.
+## SENTIMENT ANALYSIS using SYNAPSE MACHINE LEARNING(Incremental Loading).
+This was done using Synapse Data Science Component of Fabric.
 - On the bottom left, click on the Power BI icon or whatever icon present there.
 - From the list of icons, choose Synapse Data Science option. 
 - In Synapse Data science environment, click on "Notebook" tab,-To use pre-trained Machine Learning Model.
-- On the top-left, click on the Notebook name and rename appropriately for ease referencing.
+- On the top-left, click on the Notebook name and rename appropriately for easy referencing.
 ##### Steps:
 Use the created Notebook to import and read the cleaned data stored in a delta table in Lakehouse Database.
 - On the Left, click on "Lakehouse" button.
-- On the left, click "Add Lakehouse" button.- This help in accessing the different tables and files that reside in the Lakehouse Database directly from the Notebook.
+- On the left, click "Add Lakehouse" button.- This helps in accessing the different tables and files that reside in the Lakehouse Database directly from the Notebook.
 - Choose "Existing Lakehouse".
 - Click "Add".
 - Check or choose the Lakehouse where the data resides.
@@ -546,7 +546,7 @@ Create A Semantic Model
 ##### Using The Auto Create Report.
 
 - Move back to your workspace.
-- In your workspace, you will seethe drop-down of all the resources you have created in your workspace.
+- In your workspace, you will see the drop-down of all the resources you have created in your workspace.
 - select the Semantic Model.
 - At the top, under "Discover Business Insights", click on the drop-down arrow on "Explore this Data"--> choose "Auto Create Report" option.
 
@@ -642,16 +642,16 @@ Creating Pipeline using Data Factory to orchestrate everything that we have done
 
 ![Screenshot 2024-09-08 172946](https://github.com/user-attachments/assets/fb91c8a2-e10d-4c74-8806-31ccc0b6507e)
 
-##### Schedule Pipeline To Run Once Every Day AT 11: 00 AM GMT + 1
+##### Schedule Pipeline To Run Once Daily AT 11: 00 AM GMT + 1
 
-The pipeline will  be automatically triggered at 11: am in the morning, ingesting the latest news and opinion on US Presidential Election and predicted the sentiment while updating the Power BI report with the latest News and Opinions about the US Presidential election.
+The pipeline will  be automatically triggered at 11: am in the morning, ingesting the latest news and opinion on the US Presidential Election and predicted the sentiment while updating the Power BI report with the latest News and Opinions about the US Presidential election.
 
 - In Data Factory canvas, click on "Schedule" button  at the top.
 - Check the radio button "ON" under Schedule Run.
 - From "Repeat" drop-down, Pick "Daily" --To choose pipeline run frequency option.
 - Under "Time", pick the time you want  to schedule the pipeline to run, say 11:00 AM GMT +1
 - Select the start date-time and end date-time of your schedule pipeline run from the "Start Date and Time" and "End Date and Time" calendar.
-- "Time Zone" .You have the option of selecting your time zone, but the default is the time zone of you are based on, so it's advisable to go with the default time zone.
+- "Time Zone" .You have the option of selecting your time zone, but the default is the time zone you are based on, so it's advisable to go with the default time zone.
 - Then, click "Apply"
 
 ##### Pipeline Monitor.
@@ -660,15 +660,15 @@ The pipeline will  be automatically triggered at 11: am in the morning, ingestin
 - "Go to Monitoring hub" at the bottom-left
 -  Then, click "Go to Monitoring hub"
 
-## SETTING UP ALERT IN POWER BI REPORT USING Data Activator.
+## SETTING UP ALERT IN POWER BI REPORT using Data Activator.
 - Go to your workspace in Fabric.
 - Power BI report
-##### To configure your alert, you have to pick a visual to upon which you want to configure the alert. In our case , we are picking the "Positive Sentiment %" card
+##### To configure your alert, you have to pick a visual upon which you want to configure the alert. In our case , we are picking the "Positive Sentiment %" card
 - Click on the "Positive Sentiment %" card, under it click on three dots "..."
 - From the drop-down, choose "set alert"
 - On the right side, under "set an alert" --> "Visual" drop-down, pick the visual you want to set an alert on, say (Card 3)
 - Under "Condition" --> 
-   - "Measure": from the drop-down, pick card you want to create alert on, say (Positive Sentiment %)
+   - "Measure": from the drop-down, pick the card you want to create alert on, say (Positive Sentiment %)
    - "Operators": from the drop-down, pick the 'operator' you want for your alert say (Become greater than)
    - "Value", Specify the numerical value you are using as you condition, say (20)
 - Action --> (Outlook email or Teams message)pick one that is suitable to you, say (Outlook email)
