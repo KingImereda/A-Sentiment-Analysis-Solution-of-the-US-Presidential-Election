@@ -1,18 +1,18 @@
 # A Sentiment Analysis of the US Presidential Election using Microsoft Fabric.
 
 # Table of Content.
-- [Project Overview](#projectoverviw)
-- [Statement of Problem](#statementofproblem)
-- [Project Goals](#projectgoals)
-- [Solution Architecture](#solutionarchitecture)
-- [Tools Used](#toolsused)
-- [Environment Setup](#environmentsetup)
-- [Data Ingestion](#dataingestion)
-- [Data Transformation With Incremental Loading](#datatransformationwithincrementalloading)
-- [Sentiment Analysis Using Pretrained Machine Learning Model](#sentimentanalysisusingpretrainedmachinelearningmodel)
-- [Power BI Report](#powerbireport)
-- [Pipeline Orchestration Using Data Factory](#pipelineorchestrationusingdatafactory)
-- [Data Activator Email Alert In Power BI](#dataactivatoremailalertinpowerbi)
+-  [Project Overview](#projectoverviw)
+-  [Statement of Problem](#statementofproblem)
+-  [Project Goals](#projectgoals)
+-  [Solution Architecture](#solutionarchitecture)
+-  [Tools Used](#toolsused)
+-  [Environment Setup](#environmentsetup)
+-  [Data Ingestion](#dataingestion)
+-  [Data Transformation With Incremental Loading](#datatransformationwithincrementalloading)
+-  [Sentiment Analysis Using Pretrained Machine Learning Model](#sentimentanalysisusingpretrainedmachinelearningmodel)
+-  [Power BI Report](#powerbireport)
+-  [Pipeline Orchestration Using Data Factory](#pipelineorchestrationusingdatafactory)
+-  [Data Activator Email Alert In Power BI](#dataactivatoremailalertinpowerbi)
 
 ## Project Overview
 
