@@ -1,4 +1,4 @@
-# An End-to-End Sentiment Analysis Solution for the US Presidential Election using Microsoft Fabric.
+# A Sentiment Analysis of the US Presidential Election using Microsoft Fabric.
 
 ## Project Overview.
 
