@@ -35,6 +35,11 @@ A Sentiment Analysis Report on US Presidential Election, 2024. This project is e
 
 7. Orchestrate the whole process as an End-to-End Pipeline using Fabric Data Factory.
 
+   ### Solution Architecture:
+
+
+![Solution Architectureg drawio](https://github.com/user-attachments/assets/49da8e7e-ea03-43d1-88db-0cf786968f6b)
+
 ## Tools Used.
 - ##### Pyspark.
 - ##### SQL.
@@ -60,7 +65,6 @@ A Sentiment Analysis Report on US Presidential Election, 2024. This project is e
 
 ![Screenshot 2024-09-09 165128](https://github.com/user-attachments/assets/7e6e5ddd-f654-4ba7-af27-93e6273fa7d9)
 
-***SOLUTION ARCHITECTURE
 
 STEPS
 
