@@ -107,7 +107,7 @@ Create and configure a Google Custom Search Engine API as real-time data source.
  - An "Enable Custom Search API" title appears, click on the drop-down (Select or Create Project).
  - Pick the name of the project you created in step 4 above (My Google Search API 2).
  - Click NEXT.
- - Click on "SHOW KEY"
+ - Click on "SHOW KEY".
  - Copy API Key  to secure place. The same API as the first API.
  - Click DONE.
 Back on The Programmable Search Engine.
