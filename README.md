@@ -1,10 +1,14 @@
 # A Sentiment Analysis of the US Presidential Election using Microsoft Fabric.
 
-## Project Overview.
+# Table of Content.
+- [Project Overview](#projectoverviw)
+- [Statement of Problem](#statementofproblem)
+
+## Project Overview
 
 A Sentiment Analysis Report on US Presidential Election, 2024. This project was executed using Microsoft Fabric as a collaborative platform which require Data Engineering, Data Science and Data Analytic skill.
 
-### Statement of Problem.
+### Statement of Problem
 
 - Lack of real-time insights: The inability to monitor and analyze global news trends and public sentiment in real-time limits our ability to respond quickly to emerging issues and opportunities.
 
@@ -12,13 +16,13 @@ A Sentiment Analysis Report on US Presidential Election, 2024. This project was 
 
 - Poor decision-making: Lack of data-driven insights leads to suboptimal decision-making, potentially impacting our business operations, reputation, and competitive position.
 
-### Project Goal.
+### Project Goal
 
 - Develop a data-driven solution to analyze global News and opinion data from the web to generate actionable insights.
 
 - Improve decision-making processes and gain a competitive advantage.
 
-### Project Scope.
+### Project Scope
 
 1. Create and configure a Google Custom Search Engine JSON API to extract US Presidential Election related data globally
 
@@ -40,7 +44,7 @@ A Sentiment Analysis Report on US Presidential Election, 2024. This project was 
 
 ![Solution Architectureg drawio](https://github.com/user-attachments/assets/49da8e7e-ea03-43d1-88db-0cf786968f6b)
 
-## Tools Used.
+## Tools Used
 - ##### Pyspark.
 - ##### SQL.
 - ##### Data Factory(Microsoft Fabric)-For Data Injestion.
@@ -69,7 +73,7 @@ A Sentiment Analysis Report on US Presidential Election, 2024. This project was 
 STEPS
 
 
-## ENVIRONMENT SETUP.
+## ENVIRONMENT SETUP
 ### Configuring Data Source. 
 Create and configure a Google Custom Search Engine API as real-time data source.
 #### Prerequisite: A Gmail account.
@@ -134,7 +138,7 @@ Switch from Power BI environment to Data Engineering environment
 - From the dropdown, "Name Lakehouse"- (Google_Custom_SearchDB).
 - Click "create".
 
-## DATA INGESTION.
+## DATA INGESTION
 This is done using the Data Factory Component of Fabric.
 - On the bottom left, click on the Power BI icon.
 - From the list of icons, click the "Data Factory" icon to move into Data Factory environment
@@ -171,7 +175,7 @@ This is done using the Data Factory Component of Fabric.
 ![Screenshot 2024-09-04 183123](https://github.com/user-attachments/assets/1754a1ed-27c6-4e8f-9fd4-e829911b5907)
 
 
-## DATA TRANSFORMAION(INCREMENTAL LOADING).
+## DATA TRANSFORMAION WITH INCREMENTAL LOADING
 This is done using Synapse Data Engineering Component of Fabric.
 - On the bottom left, click on the Power BI icon or whatever icon present there.
 - From the list of icons, choose Synapse Data Engineering. 
@@ -380,7 +384,7 @@ else:
     handle_table_exists()
 ```
 
-## SENTIMENT ANALYSIS using SYNAPSE MACHINE LEARNING(Incremental Loading).
+## SENTIMENT ANALYSIS using PRETRAINED MACHINE LEARNING MODEL
 This was done using Synapse Data Science Component of Fabric.
 - On the bottom left, click on the Power BI icon or whatever icon present there.
 - From the list of icons, choose Synapse Data Science option. 
@@ -529,7 +533,7 @@ except Exception as e:
     print(f"An error occurred: {str(e)}")
 ```
 
-## Building Report Using Power BI:
+## Power BI Report
 
 Building Our Report With sentiment_df_final table.
 ##### Steps:
@@ -660,7 +664,7 @@ The pipeline will  be automatically triggered at 11: am in the morning, ingestin
 - "Go to Monitoring hub" at the bottom-left
 -  Then, click "Go to Monitoring hub"
 
-## SETTING UP ALERT IN POWER BI REPORT using Data Activator.
+## DATA ACTIVATOR EMAIL ALERT IN POWER BI
 - Go to your workspace in Fabric.
 - Power BI report
 ##### To configure your alert, you have to pick a visual upon which you want to configure the alert. In our case , we are picking the "Positive Sentiment %" card
