@@ -4,7 +4,7 @@
 - [Project Overview](#project-overviw)
 - [Statement of Problem](#statement-of-problem)
 - [Project Goals](#project-goals)
-- [Solution Architecture](#solutionar-chitecture)
+- [Solution Architecture](#solution-architecture)
 - [Tools Used](#tools-used)
 - [Environment Setup](#environment-setup)
 - [Data Ingestion](#data-ingestion)
@@ -49,7 +49,7 @@ A Sentiment Analysis Report on US Presidential Election, 2024. This project was 
 
 7. Orchestrate the whole process as an End-to-End Pipeline using Fabric Data Factory.
 
-   ### Solution Architecture:
+   ### Solution Architecture
 
 
 ![Solution Architectureg drawio](https://github.com/user-attachments/assets/49da8e7e-ea03-43d1-88db-0cf786968f6b)
