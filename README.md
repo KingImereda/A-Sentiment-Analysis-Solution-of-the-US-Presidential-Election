@@ -3,6 +3,16 @@
 # Table of Content.
 - [Project Overview](#projectoverviw)
 - [Statement of Problem](#statementofproblem)
+- [Project Goals](#projectgoals)
+- [Solution Architecture](#solutionarchitecture)
+- [Tools Used](#toolsused)
+- [Environment Setup](#environmentsetup)
+- [Data Ingestion](#dataingestion)
+- [Data Transformation With Incremental Loading](#datatransformationwithincrementalloading)
+- [Sentiment Analysis Using Pretrained Machine Learning Model](#sentimentanalysisusingpretrainedmachinelearningmodel)
+- [Power BI Report](#powerbireport)
+- [Pipeline Orchestration Using Data Factory](#pipelineorchestrationusingdatafactory)
+- [Data Activator Email Alert In Power BI](#dataactivatoremailalertinpowerbi)
 
 ## Project Overview
 
@@ -16,7 +26,7 @@ A Sentiment Analysis Report on US Presidential Election, 2024. This project was 
 
 - Poor decision-making: Lack of data-driven insights leads to suboptimal decision-making, potentially impacting our business operations, reputation, and competitive position.
 
-### Project Goal
+### Project Goals
 
 - Develop a data-driven solution to analyze global News and opinion data from the web to generate actionable insights.
 
@@ -73,7 +83,7 @@ A Sentiment Analysis Report on US Presidential Election, 2024. This project was 
 STEPS
 
 
-## ENVIRONMENT SETUP
+## Environment Setup
 ### Configuring Data Source. 
 Create and configure a Google Custom Search Engine API as real-time data source.
 #### Prerequisite: A Gmail account.
@@ -138,7 +148,7 @@ Switch from Power BI environment to Data Engineering environment
 - From the dropdown, "Name Lakehouse"- (Google_Custom_SearchDB).
 - Click "create".
 
-## DATA INGESTION
+## Data Ingestion
 This is done using the Data Factory Component of Fabric.
 - On the bottom left, click on the Power BI icon.
 - From the list of icons, click the "Data Factory" icon to move into Data Factory environment
@@ -175,7 +185,7 @@ This is done using the Data Factory Component of Fabric.
 ![Screenshot 2024-09-04 183123](https://github.com/user-attachments/assets/1754a1ed-27c6-4e8f-9fd4-e829911b5907)
 
 
-## DATA TRANSFORMAION WITH INCREMENTAL LOADING
+## Data Transformation With Incremental Loading
 This is done using Synapse Data Engineering Component of Fabric.
 - On the bottom left, click on the Power BI icon or whatever icon present there.
 - From the list of icons, choose Synapse Data Engineering. 
@@ -384,7 +394,7 @@ else:
     handle_table_exists()
 ```
 
-## SENTIMENT ANALYSIS using PRETRAINED MACHINE LEARNING MODEL
+## Sentiment Analysis Using Pretrained Machine Learning Model
 This was done using Synapse Data Science Component of Fabric.
 - On the bottom left, click on the Power BI icon or whatever icon present there.
 - From the list of icons, choose Synapse Data Science option. 
@@ -623,7 +633,7 @@ IF (
 - Click "Edit" at the top to add visuals.
 
 
-## Orchestrating Pipeline Using Data Factory.
+## Pipeline Orchestration Using Data Factory
 Creating Pipeline using Data Factory to orchestrate everything that we have done so far in this end to end project.
 - Go into your workspace
 - Click on your Data Factory Pipeline
@@ -664,7 +674,7 @@ The pipeline will  be automatically triggered at 11: am in the morning, ingestin
 - "Go to Monitoring hub" at the bottom-left
 -  Then, click "Go to Monitoring hub"
 
-## DATA ACTIVATOR EMAIL ALERT IN POWER BI
+## Data Activator Email Alert In Power BI
 - Go to your workspace in Fabric.
 - Power BI report
 ##### To configure your alert, you have to pick a visual upon which you want to configure the alert. In our case , we are picking the "Positive Sentiment %" card
