@@ -387,7 +387,7 @@ table_exists = spark.catalog.tableExists(table_name)
 
 if not table_exists:
     # If the table doesn't exist, create it
-    df_cleaned_final.write.format("delta").saveAsTable(table_name)
+    df_cleaned_final.write.format("delta").mode("append").saveAsTable(table_name)
     print("Table created successfully")
 else:
     print("Table Already Exists")
@@ -508,7 +508,7 @@ def check_table_exists(spark, table_name):
 try:
     if not check_table_exists(spark, table_name):
         # Save the DataFrame as a new Delta table if it doesn't exist
-        sentiment_df_final.write.format("delta").saveAsTable(table_name)
+        sentiment_df_final.write.format("delta").mode("append").saveAsTable(table_name)
         print(f"Table {table_name} created successfully.")
     else:
         print("Table Already Exists")
