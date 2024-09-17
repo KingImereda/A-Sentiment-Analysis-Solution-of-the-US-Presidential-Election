@@ -345,6 +345,9 @@ df_cleaned_final = df_cleaned.withColumnRenamed("displayLink", "provider").withC
 
 
 ### Incremental Loading.
+To capture new, updated and unchanged News items and opinions on the US election , we will be employing incremental loading to our dataset using Slowly Changing Dimension Type_1. i.e SCD1.
+SCD Type1 is a form of incremental load technique in which new records are captured and updated records are overwritten and old records dropped and unchanged records remained unchanged.In  SCD1  the table will always hold the present values and not the previous values. It does not keep historical records rather present records. This is good for sentiment analysis, where focus is on present perspectives and not comparison  between historical and present perspectives.
+
 ```
 #The code effectively handles the scenario where the target table already exists by performing a MERGE operation to update existing rows and insert new ones based on specified conditions. This ensures that the #data in the Delta table remains up-to-date and consistent with the df_cleaned_final DataFrame. i.eSave the table in delta format and perform an incremental loading SCD_1
 
