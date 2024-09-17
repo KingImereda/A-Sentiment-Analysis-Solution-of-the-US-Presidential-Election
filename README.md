@@ -234,26 +234,66 @@ json_list = df_explode.toJSON().collect()
 
 ```
 ```
+#Testing the JSON string,by fetching all the 10 json object and see their json structure
+
+print(json_list)
+```
+
+```
 #Testing the JSON string list with the first news article
 
 print(json_list[0])
 
+```
+
+```
+"""
+We need to process these JSON structures to extract the desired information 
+and create a clean table format. However, since the output is a string, it presents challenges in retrieving the necessary data. 
+To extract the information, we would need to write regular expressions and other processing steps because it is a string.
+ To simplify this process, we should convert the JSON string into a JSON dictionary, making it much easier to access all or selected information.
+ For that, we will be using this function <json.loads>
 
 ```
 ```
+# First, we import the json library <import json>, then load a sample news article (json_list[0])
+
 import json
+
 # Convert the JSON String to a JSON dictionary
-
-news_json =json.loads(json_list[7])
+news_json =json.loads(json_list[0])
 
 ```
+
 ```
-# Testing the JSON Dictionary.
+# Our output is a json dictionary, though look similar to a json string.
+print(news_json)
+
+```
+
+```
+"""
+Now we can easily use the json dictionary to process the data and get information out of it.
+For example let us get a snippet of the news article [0]
+"""
+```
+```
+"""
+Testing the JSON Dictionary. In order to get the 'snippet' value from our dictionary news article [0]. 
+We needed to see where the snippet property lies within the json dictionary.It lies within the "json_object"
+of the dictionary,then we drill in inside 'json-object' to extract the 'snippet' value.
+Note, this text output is made possible because the json is a dictionary.
+"""
 
 display(news_json["json_object"]["snippet"])
 
 ```
 ```
+"""
+selecting the information we need in a news article [0], these selected information (displaylinl,link,kind,pagemap,title,snippet,) 
+will be our Column Titles or the Schema of our DataFrame. To extract these information easily from the json dictionary,
+let us make use on an online json parser <jason.parser.online> to see the exact detail structure of this json file
+"""
 print(news_json["json_object"]["displayLink"])
 print(news_json["json_object"]["link"])
 print(news_json["json_object"]["kind"])
@@ -263,12 +303,18 @@ print(news_json["json_object"]["pagemap"]["metatags"])
 print(news_json["json_object"]["title"])
 print(news_json["json_object"]["snippet"])
 
+"""
+The above code is just an example to extract information from a news article out of a possible 10 news articles
+"""
+
 ```
 
 ```
-# Processing all the json items from list[0-9].These columns capture  all the different information I want to extract fron the News/Articles c 
-# using for loop function to iterate all the News/Articles one after the other.
-
+"""
+ To fetch selected information from the json dictionary, iterating over all the articles. 
+ Note, date is not found in the news article, but we fetched the datecolumn from the time stamp 
+attached to each snippet found in each news article.
+"""
 import datetime
 # Needed to add a date column to the list, because not all news and opinion content has published date
 displayLink = []
@@ -301,8 +347,18 @@ for json_str in json_list:
         print(f"Error processing JSON object {e}")
 
 ```
+
 ```
-# Create a new Dataframe with the Custom Schema defined
+# Print out the results
+for l, t, s, d in zip(link, title, snippet, date):
+    print(f"Link: {l}, Title: {t}, Snippet: {s}, Date: {d}")
+```
+
+```
+ """
+combining all the list together and create a Dataframe with a defined Schema, so that we can get a proper table structure
+to view all the extracted information about the news. Create a new Dataframe with the Custom Schema defined.
+"""
 
 from pyspark.sql.types import StructType, StructField, StringType
 
