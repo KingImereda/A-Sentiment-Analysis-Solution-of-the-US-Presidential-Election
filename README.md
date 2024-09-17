@@ -8,7 +8,7 @@
 - [Tools Used](#tools-used)
 - [Environment Setup](#environment-setup)
 - [Data Ingestion](#data-ingestion)
-- [Data Transformation With Incremental Loading](#data-transformation-with-incremental-loading)
+- [Data Transformation And Incremental Loading](#data-transformation-and-incremental-loading)
 - [Sentiment Analysis Using Pretrained Machine Learning Model](#sentiment-analysis-using-pretrained-machine-learning-model)
 - [Power BI Report](#power-bi-report)
 - [Pipeline Orchestration Using Data Factory](#pipeline-orchestration-using-data-factory)
@@ -185,7 +185,7 @@ This is done using the Data Factory Component of Fabric.
 ![Screenshot 2024-09-04 183123](https://github.com/user-attachments/assets/1754a1ed-27c6-4e8f-9fd4-e829911b5907)
 
 
-## Data Transformation With Incremental Loading
+## Data Transformation And Incremental Loading
 This is done using Synapse Data Engineering Component of Fabric.
 - On the bottom left, click on the Power BI icon or whatever icon present there.
 - From the list of icons, choose Synapse Data Engineering. 
@@ -343,6 +343,8 @@ df_cleaned_final = df_cleaned.withColumnRenamed("displayLink", "provider").withC
 ![Screenshot 2024-09-06 111240](https://github.com/user-attachments/assets/ec34edb5-6a25-4140-bd2f-3c29a8a9f347)
 
 
+
+### Incremental Loading.
 ```
 #The code effectively handles the scenario where the target table already exists by performing a MERGE operation to update existing rows and insert new ones based on specified conditions. This ensures that the #data in the Delta table remains up-to-date and consistent with the df_cleaned_final DataFrame. i.eSave the table in delta format and perform an incremental loading SCD_1
 
