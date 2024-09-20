@@ -690,9 +690,21 @@ IF (
 
 
 ```
-- Then, go back to your dashboard to continue editing using the "Card"  visuals to apply your created Measures.
-- Click "Edit" at the top to add visuals.
+- Then, go back to your dashboard to build a live report.Using the "Card"  visual. Create three "Card" visuals for each of the sentiment measures created, 
+- Create a table in the report by clicking on the the "table" visual to the top right, under visualization pane,  you have an empty table in your canvas.
+- Add required fields. First, expand the table by clicking on your table name, say"sentiments" under (Data) Title , to your top right. This reveals in your table as well as the newly created measures for the 
+  "sentiment" table.
+- Select the following fields/columns [Title, Provider, Url, Snippet, Date] to populate your table.
+- Next, Create a Date Slicer by using the slicer visual under "visualisation Pane"
+- Format the "Date"  slicer to "drop-down" for capturing each date, to make your report organise by date.
+- Filter the "News" Table and measures ("Postive sentiment", "Negative Sentiment", "Neutral Sentiment")  cards by date, such that the dashboard by default will show the report by current date,with the option to 
+  filter the report by previous date. 
+- Continue formatting your dashboard as deep as your creativity permits.
+- Finally, remember to save your work.
 
+##### Screen Shot
+
+![Screenshot 2024-09-11 125357](https://github.com/user-attachments/assets/841cbaed-5982-45e8-93db-234711201031)
 
 ## Pipeline Orchestration Using Data Factory
 Creating Pipeline using Data Factory to orchestrate everything that we have done so far in this end to end project.
