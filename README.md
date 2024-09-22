@@ -1,4 +1,4 @@
-# A Sentiment Analysis of the US Presidential Election using Microsoft Fabric.
+# Live Sentiment Analysis of the US Presidential Election using Microsoft Fabric.
 
 ## Table of Content.
 - [Project Overview](#project-overviw)
