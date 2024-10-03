@@ -16,7 +16,7 @@
 
 ## Project Overview
 
-A Sentiment Analysis Report on US Presidential Election, 2024. This project was executed using Microsoft Fabric as a collaborative platform which require Data Engineering, Data Science and Data Analytic skill.
+A Sentiment Analysis Report on US Presidential Election, 2024. This project was executed using Microsoft Fabric as a collaborative platform which require Data Engineering, Data Science and Data Analytic tools.
 
 ### Statement of Problem
 
